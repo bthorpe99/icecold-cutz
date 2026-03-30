@@ -28,76 +28,52 @@
       overflow-x: hidden;
     }
 
-    /* ─── HERO SLIDESHOW ──────────────────────────────────────────── */
+    /* ─── HERO SLIDESHOW ─────────────────────────────────────────── */
     .hero {
-      position: relative;
-      min-height: 100vh;
+      position: relative; min-height: 100vh;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      text-align: center;
-      padding: 120px 24px 80px;
+      text-align: center; padding: 120px 24px 80px;
       overflow: hidden;
     }
-
-    /* Each slide */
     .slide {
       position: absolute; inset: 0;
-      background-size: cover;
-      background-position: center;
-      opacity: 0;
-      transition: opacity 1.6s ease-in-out;
-      transform: scale(1.05);
+      background-size: cover; background-position: center;
+      opacity: 0; transition: opacity 1.6s ease-in-out;
       animation: slowZoom 8s ease-in-out infinite alternate;
     }
     .slide.active { opacity: 1; }
-
     @keyframes slowZoom {
       from { transform: scale(1.05); }
       to   { transform: scale(1.12); }
     }
-
-    /* Dark overlay on top of slides */
     .hero-overlay {
       position: absolute; inset: 0; z-index: 1;
       background:
-        linear-gradient(180deg, rgba(4,8,15,0.55) 0%, rgba(4,8,15,0.35) 40%, rgba(4,8,15,0.75) 100%),
-        radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,212,255,0.08) 0%, transparent 70%);
+        linear-gradient(180deg, rgba(4,8,15,0.55) 0%, rgba(4,8,15,0.3) 40%, rgba(4,8,15,0.75) 100%),
+        radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,212,255,0.07) 0%, transparent 70%);
     }
-
-    /* Slide dots */
     .slide-dots {
       position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
       z-index: 10; display: flex; gap: 8px;
     }
     .dot {
       width: 8px; height: 8px; border-radius: 50%;
-      background: rgba(255,255,255,0.3);
-      border: 1px solid rgba(0,212,255,0.4);
+      background: rgba(255,255,255,0.3); border: 1px solid rgba(0,212,255,0.4);
       cursor: pointer; transition: all .3s;
     }
     .dot.active { background: var(--ice); box-shadow: 0 0 10px rgba(0,212,255,0.6); width: 24px; border-radius: 4px; }
 
-    /* Hero content above slides */
-    .hero-content {
-      position: relative; z-index: 5;
-      display: flex; flex-direction: column; align-items: center;
-    }
+    .hero-content { position: relative; z-index: 5; display: flex; flex-direction: column; align-items: center; }
+    .hero-logo-wrap { margin-bottom: 24px; animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-10px); } }
 
-    .hero-logo-wrap {
-      margin-bottom: 24px;
-      animation: float 3s ease-in-out infinite;
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-10px); }
-    }
-
-    .barber-pole { width: 80px; height: 160px; margin: 0 auto; position: relative; }
+    .barber-pole { width: 80px; height: 160px; margin: 0 auto; }
     .pole-body {
       width: 50px; height: 120px; margin: 0 auto; border-radius: 8px;
       background: repeating-linear-gradient(45deg,
-        #fff 0px, #fff 8px, #e53e3e 8px, #e53e3e 16px,
-        #fff 16px, #fff 24px, #1a6fb5 24px, #1a6fb5 32px);
+        #fff 0px,#fff 8px,#e53e3e 8px,#e53e3e 16px,
+        #fff 16px,#fff 24px,#1a6fb5 24px,#1a6fb5 32px);
       border: 2px solid #ccc;
       box-shadow: 0 0 20px rgba(0,212,255,0.3), inset 0 0 15px rgba(255,255,255,0.2);
     }
@@ -109,345 +85,325 @@
     }
     .pole-icicles { display: flex; justify-content: center; gap: 6px; margin-top: 2px; }
     .icicle {
-      width: 6px;
+      width: 6px; border-radius: 0 0 3px 3px;
       background: linear-gradient(180deg, rgba(168,237,255,0.8), transparent);
-      border-radius: 0 0 3px 3px;
       animation: drip 2s ease-in-out infinite;
     }
-    .icicle:nth-child(1){ height:14px; animation-delay:0s; }
-    .icicle:nth-child(2){ height:20px; animation-delay:.3s; }
-    .icicle:nth-child(3){ height:11px; animation-delay:.6s; }
-    .icicle:nth-child(4){ height:18px; animation-delay:.1s; }
-    .icicle:nth-child(5){ height:13px; animation-delay:.5s; }
-    @keyframes drip { 0%,100%{ opacity:1; } 50%{ opacity:0.6; } }
+    .icicle:nth-child(1){height:14px;animation-delay:0s}
+    .icicle:nth-child(2){height:20px;animation-delay:.3s}
+    .icicle:nth-child(3){height:11px;animation-delay:.6s}
+    .icicle:nth-child(4){height:18px;animation-delay:.1s}
+    .icicle:nth-child(5){height:13px;animation-delay:.5s}
+    @keyframes drip { 0%,100%{opacity:1} 50%{opacity:.6} }
 
     .hero-title {
-      font-size: clamp(2.8rem, 7vw, 5.5rem);
-      font-weight: 900; letter-spacing: 4px; text-transform: uppercase;
-      line-height: 1; margin-bottom: 4px;
+      font-size: clamp(2.8rem,7vw,5.5rem); font-weight: 900;
+      letter-spacing: 4px; text-transform: uppercase; line-height: 1; margin-bottom: 4px;
     }
     .ice-text {
-      background: linear-gradient(180deg, #fff 0%, var(--ice3) 40%, var(--ice) 70%, #0088bb 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background: linear-gradient(180deg,#fff 0%,var(--ice3) 40%,var(--ice) 70%,#0088bb 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
       filter: drop-shadow(0 0 20px rgba(0,212,255,0.6));
-    }
-    .cold-text {
-      display: block;
-      background: linear-gradient(180deg, #ffffff 0%, #e0f8ff 40%, var(--ice2) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 30px rgba(0,212,255,0.8));
     }
     .cutz-text {
       display: block; font-size: 60%; letter-spacing: 10px;
-      background: linear-gradient(90deg, var(--ice), var(--white), var(--ice));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background: linear-gradient(90deg,var(--ice),var(--white),var(--ice));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     }
     .hero-sub {
-      font-size: 0.85rem; letter-spacing: 4px; text-transform: uppercase;
-      color: var(--ice2); margin: 12px 0 36px; opacity: 0.9;
+      font-size: .85rem; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--ice2); margin: 12px 0 36px; opacity: .9;
     }
     .hero-cta {
       display: inline-block;
-      background: linear-gradient(135deg, var(--ice), #0099cc);
+      background: linear-gradient(135deg,var(--ice),#0099cc);
       color: var(--navy); text-decoration: none;
-      font-weight: 900; font-size: 1rem;
-      letter-spacing: 3px; text-transform: uppercase;
+      font-weight: 900; font-size: 1rem; letter-spacing: 3px; text-transform: uppercase;
       padding: 16px 48px; border-radius: 50px;
-      box-shadow: 0 0 30px rgba(0,212,255,0.4), 0 4px 20px rgba(0,0,0,0.4);
+      box-shadow: 0 0 30px rgba(0,212,255,0.4),0 4px 20px rgba(0,0,0,0.4);
       transition: all .25s;
     }
-    .hero-cta:hover { transform: translateY(-3px); box-shadow: 0 0 50px rgba(0,212,255,0.6), 0 8px 30px rgba(0,0,0,0.5); }
+    .hero-cta:hover { transform:translateY(-3px); box-shadow:0 0 50px rgba(0,212,255,0.6),0 8px 30px rgba(0,0,0,0.5); }
 
     /* ─── NAV ─────────────────────────────────────────────────────── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 14px 40px;
-      background: rgba(4,8,15,0.85);
-      backdrop-filter: blur(18px);
+      background: rgba(4,8,15,0.88); backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--border);
     }
-    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
     .nav-logo .pole-icon {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, var(--ice), #0088aa);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-size: 18px; font-weight: 900; color: var(--navy);
+      width:36px; height:36px; border-radius:50%;
+      background:linear-gradient(135deg,var(--ice),#0088aa);
+      display:flex; align-items:center; justify-content:center;
+      font-size:18px; font-weight:900; color:var(--navy);
     }
     .nav-logo span {
-      font-size: 1.1rem; font-weight: 800; letter-spacing: 2px;
-      background: linear-gradient(90deg, var(--ice), var(--white));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      text-transform: uppercase;
+      font-size:1.1rem; font-weight:800; letter-spacing:2px; text-transform:uppercase;
+      background:linear-gradient(90deg,var(--ice),var(--white));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links { display:flex; gap:28px; list-style:none; }
     .nav-links a {
-      color: var(--gray); text-decoration: none; font-size: 0.85rem;
-      letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600;
-      transition: color .2s;
+      color:var(--gray); text-decoration:none; font-size:.82rem;
+      letter-spacing:1.5px; text-transform:uppercase; font-weight:600; transition:color .2s;
     }
-    .nav-links a:hover { color: var(--ice); }
+    .nav-links a:hover { color:var(--ice); }
     .nav-book {
-      background: linear-gradient(135deg, var(--ice), #0088cc);
-      color: var(--navy) !important; padding: 8px 22px; border-radius: 30px;
-      font-weight: 800 !important; letter-spacing: 1px !important;
-      transition: box-shadow .2s, transform .2s !important;
+      background:linear-gradient(135deg,var(--ice),#0088cc);
+      color:var(--navy)!important; padding:8px 22px; border-radius:30px;
+      font-weight:800!important; transition:box-shadow .2s,transform .2s!important;
     }
-    .nav-book:hover { box-shadow: 0 0 20px rgba(0,212,255,0.5); transform: scale(1.04); color: var(--navy) !important; }
+    .nav-book:hover { box-shadow:0 0 20px rgba(0,212,255,0.5); transform:scale(1.04); }
 
-    /* ─── SECTION SHELL ───────────────────────────────────────────── */
-    section { position: relative; z-index: 1; padding: 90px 24px; }
-    .section-label { text-align: center; margin-bottom: 60px; }
+    /* ─── SECTIONS ────────────────────────────────────────────────── */
+    section { position:relative; z-index:1; padding:90px 24px; }
+    .section-label { text-align:center; margin-bottom:60px; }
     .section-label h2 {
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      font-weight: 900; letter-spacing: 4px; text-transform: uppercase;
-      background: linear-gradient(90deg, var(--ice), var(--white), var(--ice));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      margin-bottom: 8px;
+      font-size:clamp(1.8rem,4vw,2.8rem); font-weight:900;
+      letter-spacing:4px; text-transform:uppercase;
+      background:linear-gradient(90deg,var(--ice),var(--white),var(--ice));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px;
     }
-    .section-label p { color: var(--ice2); font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; }
-    .ice-line {
-      width: 80px; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--ice), transparent);
-      margin: 14px auto 0;
-    }
+    .section-label p { color:var(--ice2); font-size:.85rem; letter-spacing:2px; text-transform:uppercase; }
+    .ice-line { width:80px; height:2px; background:linear-gradient(90deg,transparent,var(--ice),transparent); margin:14px auto 0; }
 
     /* ─── SERVICES ────────────────────────────────────────────────── */
-    #services { background: var(--navy2); }
+    #services { background:var(--navy2); }
     .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px; max-width: 1100px; margin: 0 auto;
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:20px; max-width:1100px; margin:0 auto;
     }
     .service-card {
-      background: var(--glass); border: 1px solid var(--border);
-      border-radius: 16px; padding: 30px 24px; text-align: center;
-      transition: all .25s; position: relative; overflow: hidden;
-      backdrop-filter: blur(10px);
+      background:var(--glass); border:1px solid var(--border); border-radius:16px;
+      padding:30px 24px; text-align:center; transition:all .25s;
+      position:relative; overflow:hidden; backdrop-filter:blur(10px);
     }
     .service-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--ice), transparent);
-      opacity: 0; transition: opacity .25s;
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg,transparent,var(--ice),transparent);
+      opacity:0; transition:opacity .25s;
     }
-    .service-card:hover { transform: translateY(-6px); border-color: var(--ice); box-shadow: 0 12px 40px rgba(0,212,255,0.15); }
-    .service-card:hover::before { opacity: 1; }
-    .service-icon { font-size: 2.2rem; margin-bottom: 12px; }
-    .service-name { font-size: 0.95rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
-    .service-desc { font-size: 0.78rem; color: var(--gray); margin-bottom: 16px; line-height: 1.5; }
+    .service-card:hover { transform:translateY(-6px); border-color:var(--ice); box-shadow:0 12px 40px rgba(0,212,255,0.15); }
+    .service-card:hover::before { opacity:1; }
+    .service-icon { font-size:2.2rem; margin-bottom:12px; }
+    .service-name { font-size:.95rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
+    .service-desc { font-size:.78rem; color:var(--gray); margin-bottom:16px; line-height:1.5; }
     .service-price {
-      font-size: 1.6rem; font-weight: 900;
-      background: linear-gradient(135deg, var(--ice), var(--white));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      font-size:1.8rem; font-weight:900;
+      background:linear-gradient(135deg,var(--ice),var(--white));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     }
-    .service-time { font-size: 0.72rem; color: var(--gray); margin-top: 4px; letter-spacing: 1px; }
+    .service-time { font-size:.72rem; color:var(--gray); margin-top:4px; letter-spacing:1px; }
 
     /* ─── GALLERY ─────────────────────────────────────────────────── */
-    #gallery { background: var(--navy); }
+    #gallery { background:var(--navy); }
     .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 16px; max-width: 1200px; margin: 0 auto;
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+      gap:14px; max-width:1300px; margin:0 auto;
     }
     .gallery-item {
-      position: relative; border-radius: 14px; overflow: hidden;
-      aspect-ratio: 1; border: 1px solid var(--border);
-      cursor: pointer; transition: transform .3s, box-shadow .3s;
-      background: #080e1a;
+      position:relative; border-radius:14px; overflow:hidden;
+      aspect-ratio:1; border:1px solid var(--border); cursor:pointer;
+      transition:transform .3s,box-shadow .3s; background:#080e1a;
     }
-    .gallery-item:hover { transform: scale(1.03); box-shadow: 0 16px 50px rgba(0,212,255,0.2); }
+    .gallery-item:hover { transform:scale(1.03); box-shadow:0 16px 50px rgba(0,212,255,0.2); }
+    .gallery-item.wide { grid-column:span 2; aspect-ratio:2/1; }
     .gallery-item img {
-      width: 100%; height: 100%; object-fit: cover;
-      display: block; filter: brightness(0.88);
-      transition: filter .3s, transform .4s;
+      width:100%; height:100%; object-fit:cover; display:block;
+      filter:brightness(.88); transition:filter .3s,transform .4s;
+      image-orientation: from-image;
     }
-    .gallery-item:hover img { filter: brightness(1.05); transform: scale(1.04); }
+    .gallery-item:hover img { filter:brightness(1.05); transform:scale(1.04); }
     .gallery-item .overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(0deg, rgba(0,0,0,0.72) 0%, transparent 55%);
-      opacity: 0; transition: opacity .3s;
-      display: flex; align-items: flex-end; padding: 16px;
+      position:absolute; inset:0;
+      background:linear-gradient(0deg,rgba(0,0,0,.72) 0%,transparent 55%);
+      opacity:0; transition:opacity .3s;
+      display:flex; align-items:flex-end; padding:16px;
     }
-    .gallery-item:hover .overlay { opacity: 1; }
-    .overlay span { font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase; color: var(--ice); font-weight: 700; }
+    .gallery-item:hover .overlay { opacity:1; }
+    .overlay span { font-size:.78rem; letter-spacing:2px; text-transform:uppercase; color:var(--ice); font-weight:700; }
+    @media(max-width:600px){.gallery-item.wide{grid-column:span 1;aspect-ratio:1;}}
 
-    /* wide cards */
-    .gallery-item.wide { grid-column: span 2; aspect-ratio: 2/1; }
-    @media (max-width: 600px) { .gallery-item.wide { grid-column: span 1; aspect-ratio: 1; } }
+    /* ─── VIDEOS ──────────────────────────────────────────────────── */
+    #videos { background:var(--navy2); }
+    .videos-grid {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:20px; max-width:1200px; margin:0 auto;
+    }
+    .video-card {
+      border-radius:16px; overflow:hidden;
+      border:1px solid var(--border); background:#060c18;
+      transition:all .3s;
+    }
+    .video-card:hover { border-color:var(--ice); box-shadow:0 12px 40px rgba(0,212,255,0.18); }
+    .video-card video {
+      width:100%; display:block;
+      max-height:420px; object-fit:cover;
+    }
+    .video-label {
+      padding:12px 16px; font-size:.75rem; letter-spacing:2px;
+      text-transform:uppercase; color:var(--ice2); font-weight:600;
+    }
 
     /* ─── LIGHTBOX ────────────────────────────────────────────────── */
     .lightbox {
-      position: fixed; inset: 0; z-index: 300;
-      background: rgba(0,0,0,0.92);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity .3s;
+      position:fixed; inset:0; z-index:300;
+      background:rgba(0,0,0,.92); backdrop-filter:blur(8px);
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; pointer-events:none; transition:opacity .3s;
     }
-    .lightbox.open { opacity: 1; pointer-events: all; }
-    .lightbox img { max-width: 90vw; max-height: 88vh; border-radius: 12px; border: 1px solid var(--border); }
-    .lb-close {
-      position: absolute; top: 20px; right: 24px; font-size: 2rem;
-      color: var(--gray); cursor: pointer; transition: color .2s;
-      background: none; border: none;
-    }
-    .lb-close:hover { color: var(--ice); }
+    .lightbox.open { opacity:1; pointer-events:all; }
+    .lightbox img { max-width:90vw; max-height:88vh; border-radius:12px; border:1px solid var(--border); image-orientation:from-image; }
+    .lb-close { position:absolute; top:20px; right:24px; font-size:2rem; color:var(--gray); cursor:pointer; background:none; border:none; transition:color .2s; }
+    .lb-close:hover { color:var(--ice); }
 
     /* ─── BOOKING ─────────────────────────────────────────────────── */
-    #booking { background: var(--navy2); padding-bottom: 100px; }
-    .booking-wrap {
-      max-width: 920px; margin: 0 auto;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
-    }
-    .booking-panel {
-      background: var(--glass); border: 1px solid var(--border);
-      border-radius: 20px; padding: 32px; backdrop-filter: blur(12px);
-    }
+    #booking { background:var(--navy); padding-bottom:100px; }
+    .booking-wrap { max-width:920px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+    .booking-panel { background:var(--glass); border:1px solid var(--border); border-radius:20px; padding:32px; backdrop-filter:blur(12px); }
     .panel-title {
-      font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--ice); margin-bottom: 20px; font-weight: 700;
-      display: flex; align-items: center; gap: 8px;
+      font-size:.8rem; letter-spacing:3px; text-transform:uppercase;
+      color:var(--ice); margin-bottom:20px; font-weight:700;
+      display:flex; align-items:center; gap:8px;
     }
-    .panel-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+    .panel-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--border),transparent); }
 
-    /* Calendar */
-    .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-    .cal-month { font-size: 1rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+    .cal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+    .cal-month { font-size:1rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; }
     .cal-nav {
-      background: none; border: 1px solid var(--border); color: var(--ice);
-      width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
-      font-size: 1rem; transition: all .2s;
-      display: flex; align-items: center; justify-content: center;
+      background:none; border:1px solid var(--border); color:var(--ice);
+      width:32px; height:32px; border-radius:8px; cursor:pointer;
+      font-size:1rem; transition:all .2s; display:flex; align-items:center; justify-content:center;
     }
-    .cal-nav:hover { background: var(--ice); color: var(--navy); border-color: var(--ice); }
-    .cal-days-header { display: grid; grid-template-columns: repeat(7,1fr); text-align: center; margin-bottom: 8px; }
-    .cal-days-header span { font-size: 0.65rem; letter-spacing: 1px; color: var(--gray); text-transform: uppercase; padding: 4px 0; }
-    .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
+    .cal-nav:hover { background:var(--ice); color:var(--navy); border-color:var(--ice); }
+    .cal-days-header { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; margin-bottom:8px; }
+    .cal-days-header span { font-size:.65rem; letter-spacing:1px; color:var(--gray); text-transform:uppercase; padding:4px 0; }
+    .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
     .cal-day {
-      aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-      border-radius: 8px; font-size: 0.85rem; cursor: pointer;
-      border: 1px solid transparent; transition: all .15s; font-weight: 600;
+      aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+      border-radius:8px; font-size:.85rem; cursor:pointer;
+      border:1px solid transparent; transition:all .15s; font-weight:600;
     }
-    .cal-day:hover:not(.disabled):not(.empty) { border-color: var(--ice); color: var(--ice); }
-    .cal-day.selected { background: var(--ice); color: var(--navy); font-weight: 900; box-shadow: 0 0 14px rgba(0,212,255,0.5); }
-    .cal-day.today { border-color: rgba(0,212,255,0.4); color: var(--ice2); }
-    .cal-day.disabled { color: #2a3544; cursor: not-allowed; }
-    .cal-day.empty { cursor: default; }
+    .cal-day:hover:not(.disabled):not(.empty) { border-color:var(--ice); color:var(--ice); }
+    .cal-day.selected { background:var(--ice); color:var(--navy); font-weight:900; box-shadow:0 0 14px rgba(0,212,255,0.5); }
+    .cal-day.today { border-color:rgba(0,212,255,0.4); color:var(--ice2); }
+    .cal-day.disabled { color:#2a3544; cursor:not-allowed; }
+    .cal-day.empty { cursor:default; }
 
-    /* Time slots */
-    .time-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+    .time-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
     .time-slot {
-      padding: 10px 6px; border-radius: 10px; text-align: center;
-      font-size: 0.8rem; font-weight: 600; letter-spacing: 1px;
-      border: 1px solid var(--border); cursor: pointer;
-      transition: all .15s; background: rgba(0,0,0,0.2);
+      padding:10px 6px; border-radius:10px; text-align:center;
+      font-size:.8rem; font-weight:600; letter-spacing:1px;
+      border:1px solid var(--border); cursor:pointer;
+      transition:all .15s; background:rgba(0,0,0,.2);
     }
-    .time-slot:hover:not(.booked) { border-color: var(--ice); color: var(--ice); }
-    .time-slot.selected { background: var(--ice); color: var(--navy); border-color: var(--ice); font-weight: 900; box-shadow: 0 0 12px rgba(0,212,255,0.4); }
-    .time-slot.booked { color: #2a3544; border-color: #1a2535; cursor: not-allowed; }
-    .no-date-msg { color: var(--gray); font-size: 0.8rem; text-align: center; padding: 40px 0; letter-spacing: 1px; }
+    .time-slot:hover:not(.booked) { border-color:var(--ice); color:var(--ice); }
+    .time-slot.selected { background:var(--ice); color:var(--navy); border-color:var(--ice); font-weight:900; box-shadow:0 0 12px rgba(0,212,255,0.4); }
+    .time-slot.booked { color:#2a3544; border-color:#1a2535; cursor:not-allowed; }
+    .no-date-msg { color:var(--gray); font-size:.8rem; text-align:center; padding:40px 0; letter-spacing:1px; }
 
-    /* Form */
-    .booking-form { display: flex; flex-direction: column; gap: 14px; }
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: var(--ice2); font-weight: 600; }
+    .booking-form { display:flex; flex-direction:column; gap:14px; }
+    .form-group { display:flex; flex-direction:column; gap:6px; }
+    .form-group label { font-size:.72rem; letter-spacing:2px; text-transform:uppercase; color:var(--ice2); font-weight:600; }
     .form-group input,
     .form-group select,
     .form-group textarea {
-      background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px;
-      color: var(--white); padding: 12px 16px; font-size: 0.9rem;
-      font-family: inherit; outline: none; transition: border-color .2s, box-shadow .2s;
+      background:rgba(0,0,0,.3); border:1px solid var(--border); border-radius:10px;
+      color:var(--white); padding:12px 16px; font-size:.9rem;
+      font-family:inherit; outline:none; transition:border-color .2s,box-shadow .2s;
     }
     .form-group input:focus,
     .form-group select:focus,
-    .form-group textarea:focus { border-color: var(--ice); box-shadow: 0 0 0 3px rgba(0,212,255,0.1); }
-    .form-group select option { background: #0d1828; }
-    .form-group textarea { resize: none; height: 80px; }
+    .form-group textarea:focus { border-color:var(--ice); box-shadow:0 0 0 3px rgba(0,212,255,.1); }
+    .form-group select option { background:#0d1828; }
+    .form-group textarea { resize:none; height:80px; }
     .booking-summary {
-      background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.2);
-      border-radius: 10px; padding: 14px 16px; font-size: 0.82rem;
-      color: var(--ice2); letter-spacing: 1px; min-height: 52px;
+      background:rgba(0,212,255,.05); border:1px solid rgba(0,212,255,.2);
+      border-radius:10px; padding:14px 16px; font-size:.82rem;
+      color:var(--ice2); letter-spacing:1px; min-height:52px;
     }
-    .booking-summary strong { color: var(--white); }
+    .booking-summary strong { color:var(--white); }
     .btn-book {
-      background: linear-gradient(135deg, var(--ice), #0099cc);
-      color: var(--navy); font-weight: 900; font-size: 0.9rem;
-      letter-spacing: 3px; text-transform: uppercase;
-      border: none; border-radius: 50px; padding: 16px;
-      cursor: pointer; transition: all .25s;
-      box-shadow: 0 4px 20px rgba(0,212,255,0.3);
+      background:linear-gradient(135deg,var(--ice),#0099cc);
+      color:var(--navy); font-weight:900; font-size:.9rem;
+      letter-spacing:3px; text-transform:uppercase;
+      border:none; border-radius:50px; padding:16px; cursor:pointer;
+      transition:all .25s; box-shadow:0 4px 20px rgba(0,212,255,.3);
     }
-    .btn-book:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,212,255,0.5); }
-    .btn-book:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-book:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(0,212,255,.5); }
+    .btn-book:disabled { opacity:.4; cursor:not-allowed; transform:none; box-shadow:none; }
 
-    /* ─── CONFIRMATION MODAL ──────────────────────────────────────── */
+    /* ─── MODAL ───────────────────────────────────────────────────── */
     .modal-overlay {
-      position: fixed; inset: 0; z-index: 200;
-      background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity .3s; padding: 24px;
+      position:fixed; inset:0; z-index:200;
+      background:rgba(0,0,0,.8); backdrop-filter:blur(8px);
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; pointer-events:none; transition:opacity .3s; padding:24px;
     }
-    .modal-overlay.show { opacity: 1; pointer-events: all; }
+    .modal-overlay.show { opacity:1; pointer-events:all; }
     .modal {
-      background: var(--navy3); border: 1px solid var(--ice); border-radius: 24px;
-      padding: 48px 40px; max-width: 480px; width: 100%; text-align: center;
-      box-shadow: 0 0 60px rgba(0,212,255,0.2);
-      transform: scale(0.9); transition: transform .3s;
+      background:var(--navy3); border:1px solid var(--ice); border-radius:24px;
+      padding:48px 40px; max-width:480px; width:100%; text-align:center;
+      box-shadow:0 0 60px rgba(0,212,255,.2);
+      transform:scale(.9); transition:transform .3s;
     }
-    .modal-overlay.show .modal { transform: scale(1); }
-    .modal-icon { font-size: 3.5rem; margin-bottom: 16px; }
+    .modal-overlay.show .modal { transform:scale(1); }
+    .modal-icon { font-size:3.5rem; margin-bottom:16px; }
     .modal h3 {
-      font-size: 1.5rem; font-weight: 900; letter-spacing: 3px; text-transform: uppercase;
-      background: linear-gradient(90deg, var(--ice), var(--white));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px;
+      font-size:1.5rem; font-weight:900; letter-spacing:3px; text-transform:uppercase;
+      background:linear-gradient(90deg,var(--ice),var(--white));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:12px;
     }
-    .modal p { color: var(--gray); font-size: 0.9rem; line-height: 1.6; margin-bottom: 8px; }
-    .modal .appt-detail { color: var(--ice2); font-weight: 600; }
+    .modal p { color:var(--gray); font-size:.9rem; line-height:1.6; margin-bottom:8px; }
+    .modal .appt-detail { color:var(--ice2); font-weight:600; }
     .modal-close {
-      margin-top: 28px; background: linear-gradient(135deg, var(--ice), #0099cc);
-      color: var(--navy); font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
-      font-size: 0.85rem; border: none; border-radius: 50px; padding: 14px 40px;
-      cursor: pointer; transition: all .2s;
+      margin-top:28px; background:linear-gradient(135deg,var(--ice),#0099cc);
+      color:var(--navy); font-weight:900; letter-spacing:2px; text-transform:uppercase;
+      font-size:.85rem; border:none; border-radius:50px; padding:14px 40px; cursor:pointer; transition:all .2s;
     }
-    .modal-close:hover { box-shadow: 0 0 20px rgba(0,212,255,0.5); }
+    .modal-close:hover { box-shadow:0 0 20px rgba(0,212,255,.5); }
 
     /* ─── FOOTER ──────────────────────────────────────────────────── */
     footer {
-      position: relative; z-index: 1;
-      background: #020508; border-top: 1px solid var(--border);
-      padding: 60px 24px 32px; text-align: center;
+      position:relative; z-index:1; background:#020508;
+      border-top:1px solid var(--border); padding:60px 24px 32px; text-align:center;
     }
     .footer-brand {
-      font-size: 1.5rem; font-weight: 900; letter-spacing: 4px; text-transform: uppercase;
-      background: linear-gradient(90deg, var(--ice), var(--white));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px;
+      font-size:1.5rem; font-weight:900; letter-spacing:4px; text-transform:uppercase;
+      background:linear-gradient(90deg,var(--ice),var(--white));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:6px;
     }
-    .footer-tag { color: var(--ice2); font-size: 0.78rem; letter-spacing: 2px; margin-bottom: 32px; }
-    .footer-cols { display: flex; justify-content: center; gap: 80px; flex-wrap: wrap; margin-bottom: 40px; }
-    .footer-col h4 { font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; color: var(--ice); margin-bottom: 16px; }
-    .footer-col p, .footer-col a { color: var(--gray); font-size: 0.85rem; line-height: 2; text-decoration: none; display: block; transition: color .2s; }
-    .footer-col a:hover { color: var(--ice); }
-    .footer-hours-row { display: flex; justify-content: space-between; gap: 24px; }
-    .footer-hours-row span:first-child { color: var(--white); font-weight: 600; }
-    .social-row { display: flex; justify-content: center; gap: 16px; margin: 32px 0; }
+    .footer-tag { color:var(--ice2); font-size:.78rem; letter-spacing:2px; margin-bottom:32px; }
+    .footer-cols { display:flex; justify-content:center; gap:80px; flex-wrap:wrap; margin-bottom:40px; }
+    .footer-col h4 { font-size:.72rem; letter-spacing:3px; text-transform:uppercase; color:var(--ice); margin-bottom:16px; }
+    .footer-col p,.footer-col a { color:var(--gray); font-size:.85rem; line-height:2; text-decoration:none; display:block; transition:color .2s; }
+    .footer-col a:hover { color:var(--ice); }
+    .footer-hours-row { display:flex; justify-content:space-between; gap:24px; }
+    .footer-hours-row span:first-child { color:var(--white); font-weight:600; }
+    .social-row { display:flex; justify-content:center; gap:16px; margin:32px 0; }
     .social-btn {
-      width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      text-decoration: none; color: var(--gray); font-size: 1.1rem; transition: all .2s;
+      width:42px; height:42px; border-radius:50%; border:1px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+      text-decoration:none; color:var(--gray); font-size:1.1rem; transition:all .2s;
     }
-    .social-btn:hover { border-color: var(--ice); color: var(--ice); box-shadow: 0 0 14px rgba(0,212,255,0.3); }
-    .footer-copy { color: #2a3a4a; font-size: 0.72rem; letter-spacing: 2px; }
+    .social-btn:hover { border-color:var(--ice); color:var(--ice); box-shadow:0 0 14px rgba(0,212,255,.3); }
+    .footer-copy { color:#2a3a4a; font-size:.72rem; letter-spacing:2px; }
 
     /* ─── RESPONSIVE ──────────────────────────────────────────────── */
-    @media (max-width: 768px) {
-      nav { padding: 12px 20px; }
-      .nav-links { display: none; }
-      .booking-wrap { grid-template-columns: 1fr; }
-      .footer-cols { gap: 40px; }
-      .footer-hours-row { flex-direction: column; gap: 0; }
-      .time-grid { grid-template-columns: repeat(2,1fr); }
-      .services-grid { grid-template-columns: repeat(2,1fr); }
+    @media(max-width:768px){
+      nav{padding:12px 20px;}
+      .nav-links{display:none;}
+      .booking-wrap{grid-template-columns:1fr;}
+      .footer-cols{gap:40px;}
+      .footer-hours-row{flex-direction:column;gap:0;}
+      .time-grid{grid-template-columns:repeat(2,1fr);}
+      .services-grid{grid-template-columns:repeat(2,1fr);}
     }
-    @media (max-width: 480px) {
-      .services-grid { grid-template-columns: 1fr; }
+    @media(max-width:480px){
+      .services-grid{grid-template-columns:1fr;}
     }
   </style>
 </head>
@@ -462,27 +418,30 @@
   <ul class="nav-links">
     <li><a href="#services">Services</a></li>
     <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#videos">Videos</a></li>
     <li><a href="#booking" class="nav-book">Book Now</a></li>
   </ul>
 </nav>
 
-<!-- ─── HERO with SLIDESHOW ───────────────────────────────────────── -->
+<!-- ─── HERO ──────────────────────────────────────────────────────── -->
 <section class="hero" id="home">
+  <!-- All images cycle as background -->
+  <div class="slide active" style="background-image:url('images/cut1.png')"></div>
+  <div class="slide" style="background-image:url('images/cut2.png')"></div>
+  <div class="slide" style="background-image:url('images/cut3.png')"></div>
+  <div class="slide" style="background-image:url('images/cut4.png')"></div>
+  <div class="slide" style="background-image:url('images/cut5.png')"></div>
+  <div class="slide" style="background-image:url('images/cut8.jpeg')"></div>
+  <div class="slide" style="background-image:url('images/cut9.jpeg')"></div>
+  <div class="slide" style="background-image:url('images/cut11.jpeg')"></div>
+  <div class="slide" style="background-image:url('images/cut12.jpeg')"></div>
+  <div class="slide" style="background-image:url('images/cut15.jpeg')"></div>
+  <div class="slide" style="background-image:url('images/cut17.jpeg')"></div>
+  <div class="slide" style="background-image:url('images/cut18.jpeg')"></div>
+  <div class="slide" style="background-image:url('images/logo.png')"></div>
 
-  <!-- Background slides — all 8 photos -->
-  <div class="slide active"  style="background-image:url('images/cut1.png')"></div>
-  <div class="slide"         style="background-image:url('images/cut2.png')"></div>
-  <div class="slide"         style="background-image:url('images/cut3.png')"></div>
-  <div class="slide"         style="background-image:url('images/cut4.png')"></div>
-  <div class="slide"         style="background-image:url('images/cut5.png')"></div>
-  <div class="slide"         style="background-image:url('images/cut6.png')"></div>
-  <div class="slide"         style="background-image:url('images/cut7.png')"></div>
-  <div class="slide"         style="background-image:url('images/logo.png')"></div>
-
-  <!-- Dark overlay -->
   <div class="hero-overlay"></div>
 
-  <!-- Hero content -->
   <div class="hero-content">
     <div class="hero-logo-wrap">
       <div class="barber-pole">
@@ -495,7 +454,6 @@
         <div class="icicle"></div>
       </div>
     </div>
-
     <h1 class="hero-title">
       <span class="ice-text">ICE COLD</span>
       <span class="cutz-text">C U T Z</span>
@@ -504,103 +462,170 @@
     <a href="#booking" class="hero-cta">Book Your Cut</a>
   </div>
 
-  <!-- Slide indicator dots -->
   <div class="slide-dots" id="slideDots"></div>
 </section>
 
 <!-- ─── SERVICES ──────────────────────────────────────────────────── -->
 <section id="services">
   <div class="section-label">
-    <h2>Services</h2>
-    <p>Premium cuts, clean fades, sharp lines</p>
+    <h2>Services &amp; Pricing</h2>
+    <p>Every cut is a statement</p>
     <div class="ice-line"></div>
   </div>
   <div class="services-grid">
     <div class="service-card">
       <div class="service-icon">✂️</div>
-      <div class="service-name">Haircut</div>
-      <div class="service-desc">Classic cut with clean lines and sharp edges</div>
-      <div class="service-price">$25</div>
+      <div class="service-name">Adult Cut</div>
+      <div class="service-desc">Clean cut with sharp lines and precision edges</div>
+      <div class="service-price">$40</div>
       <div class="service-time">~30 min</div>
     </div>
     <div class="service-card">
-      <div class="service-icon">💈</div>
-      <div class="service-name">Fade</div>
-      <div class="service-desc">Low, mid or high fade — precision tapered perfection</div>
-      <div class="service-price">$30</div>
-      <div class="service-time">~45 min</div>
+      <div class="service-icon">👦</div>
+      <div class="service-name">Kids Cut</div>
+      <div class="service-desc">Fresh cuts for the young kings (12 &amp; under)</div>
+      <div class="service-price">$25</div>
+      <div class="service-time">~25 min</div>
     </div>
     <div class="service-card">
       <div class="service-icon">🧔</div>
       <div class="service-name">Beard Trim</div>
-      <div class="service-desc">Shape, line up and clean your beard</div>
-      <div class="service-price">$15</div>
+      <div class="service-desc">Shape, edge up and clean your beard</div>
+      <div class="service-price">$25</div>
       <div class="service-time">~20 min</div>
     </div>
     <div class="service-card">
-      <div class="service-icon">⚡</div>
-      <div class="service-name">Cut + Beard</div>
-      <div class="service-desc">Full service — haircut and full beard styling</div>
-      <div class="service-price">$40</div>
-      <div class="service-time">~60 min</div>
-    </div>
-    <div class="service-card">
       <div class="service-icon">👑</div>
-      <div class="service-name">Kids Cut</div>
-      <div class="service-desc">Clean cuts for the little ones (12 &amp; under)</div>
-      <div class="service-price">$20</div>
-      <div class="service-time">~25 min</div>
+      <div class="service-name">Cut + Beard Combo</div>
+      <div class="service-desc">Full adult cut plus complete beard styling</div>
+      <div class="service-price">$50</div>
+      <div class="service-time">~55 min</div>
     </div>
     <div class="service-card">
       <div class="service-icon">🎨</div>
-      <div class="service-name">Design / Art</div>
-      <div class="service-desc">Custom designs and hair art carved in</div>
-      <div class="service-price">$45+</div>
+      <div class="service-name">Designs</div>
+      <div class="service-desc">Custom artwork, patterns and designs carved in</div>
+      <div class="service-price">$50+</div>
       <div class="service-time">~60 min</div>
     </div>
   </div>
 </section>
 
-<!-- ─── GALLERY — all 8 images ────────────────────────────────────── -->
+<!-- ─── GALLERY ────────────────────────────────────────────────────── -->
 <section id="gallery">
   <div class="section-label">
     <h2>The Work</h2>
     <p>Fresh cuts speak for themselves</p>
     <div class="ice-line"></div>
   </div>
-
   <div class="gallery-grid">
-    <div class="gallery-item wide" onclick="openLb('images/cut1.png','Blue Dyed Afro Fade')">
-      <img src="images/cut1.png" alt="Blue dyed afro fade" onerror="this.style.display='none'">
-      <div class="overlay"><span>Color + Fade</span></div>
+    <div class="gallery-item wide" onclick="openLb('images/cut1.png','Fade')">
+      <img src="images/cut1.png" alt="Fade" onerror="this.style.display='none'">
+      <div class="overlay"><span>Fade</span></div>
     </div>
     <div class="gallery-item" onclick="openLb('images/cut2.png','Fade + Beard')">
-      <img src="images/cut2.png" alt="Fade with beard" onerror="this.style.display='none'">
+      <img src="images/cut2.png" alt="Fade + Beard" onerror="this.style.display='none'">
       <div class="overlay"><span>Fade + Beard</span></div>
     </div>
-    <div class="gallery-item" onclick="openLb('images/cut3.png','Dreads + Fade by Chill')">
-      <img src="images/cut3.png" alt="Dreads + fade" onerror="this.style.display='none'">
+    <div class="gallery-item" onclick="openLb('images/cut3.png','Dreads + Fade')">
+      <img src="images/cut3.png" alt="Dreads + Fade" onerror="this.style.display='none'">
       <div class="overlay"><span>Dreads + Fade</span></div>
     </div>
-    <div class="gallery-item" onclick="openLb('images/cut4.png','Low Taper Fade')">
-      <img src="images/cut4.png" alt="Low taper fade" onerror="this.style.display='none'">
+    <div class="gallery-item" onclick="openLb('images/cut4.png','Low Taper')">
+      <img src="images/cut4.png" alt="Low Taper" onerror="this.style.display='none'">
       <div class="overlay"><span>Low Taper</span></div>
     </div>
-    <div class="gallery-item wide" onclick="openLb('images/cut5.png','Precision Line-Up')">
-      <img src="images/cut5.png" alt="Barber at work" onerror="this.style.display='none'">
-      <div class="overlay"><span>Precision Cut</span></div>
-    </div>
-    <div class="gallery-item" onclick="openLb('images/cut6.png','Sharp Line-Up')">
-      <img src="images/cut6.png" alt="Sharp line up" onerror="this.style.display='none'">
+    <div class="gallery-item" onclick="openLb('images/cut5.png','Line-Up')">
+      <img src="images/cut5.png" alt="Line-Up" onerror="this.style.display='none'">
       <div class="overlay"><span>Line-Up</span></div>
     </div>
+    <div class="gallery-item" onclick="openLb('images/cut6.png','Precision Cut')">
+      <img src="images/cut6.png" alt="Precision Cut" onerror="this.style.display='none'">
+      <div class="overlay"><span>Precision Cut</span></div>
+    </div>
     <div class="gallery-item" onclick="openLb('images/cut7.png','Waves + Fade')">
-      <img src="images/cut7.png" alt="Waves fade beard" onerror="this.style.display='none'">
+      <img src="images/cut7.png" alt="Waves + Fade" onerror="this.style.display='none'">
       <div class="overlay"><span>Waves + Fade</span></div>
     </div>
+    <!-- New design cuts -->
+    <div class="gallery-item" onclick="openLb('images/cut8.jpeg','Design — Crown')">
+      <img src="images/cut8.jpeg" alt="Design Crown" onerror="this.style.display='none'">
+      <div class="overlay"><span>Design — Crown</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLb('images/cut9.jpeg','Design — No')">
+      <img src="images/cut9.jpeg" alt="Design No" onerror="this.style.display='none'">
+      <div class="overlay"><span>Design — Letters</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLb('images/cut10.jpeg','Design — Heart')">
+      <img src="images/cut10.jpeg" alt="Design Heart" onerror="this.style.display='none'">
+      <div class="overlay"><span>Design — Heart</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLb('images/cut11.jpeg','Design — Diamond')">
+      <img src="images/cut11.jpeg" alt="Design Diamond" onerror="this.style.display='none'">
+      <div class="overlay"><span>Design — Diamond</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLb('images/cut12.jpeg','Design — Star')">
+      <img src="images/cut12.jpeg" alt="Design Star" onerror="this.style.display='none'">
+      <div class="overlay"><span>Design — Star</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLb('images/cut13.jpeg','Design — Eye')">
+      <img src="images/cut13.jpeg" alt="Design Eye" onerror="this.style.display='none'">
+      <div class="overlay"><span>Design — Eye</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLb('images/cut15.jpeg','Design — LV')">
+      <img src="images/cut15.jpeg" alt="Design LV" onerror="this.style.display='none'">
+      <div class="overlay"><span>Design — LV</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLb('images/cut16.jpeg','Design — Lightning')">
+      <img src="images/cut16.jpeg" alt="Design Lightning" onerror="this.style.display='none'">
+      <div class="overlay"><span>Design — Lightning</span></div>
+    </div>
+    <div class="gallery-item wide" onclick="openLb('images/cut17.jpeg','Chill at Work')">
+      <img src="images/cut17.jpeg" alt="Chill at Work" onerror="this.style.display='none'">
+      <div class="overlay"><span>Chill at Work</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLb('images/cut18.jpeg','Duck Tail Fade')">
+      <img src="images/cut18.jpeg" alt="Duck Tail Fade" onerror="this.style.display='none'">
+      <div class="overlay"><span>Duck Tail Fade</span></div>
+    </div>
     <div class="gallery-item" onclick="openLb('images/logo.png','Ice Cold Cutz')">
-      <img src="images/logo.png" alt="Ice Cold Cutz logo" onerror="this.style.display='none'">
+      <img src="images/logo.png" alt="Ice Cold Cutz" onerror="this.style.display='none'">
       <div class="overlay"><span>Ice Cold Cutz</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── VIDEOS ─────────────────────────────────────────────────────── -->
+<section id="videos">
+  <div class="section-label">
+    <h2>In Action</h2>
+    <p>Watch the work up close</p>
+    <div class="ice-line"></div>
+  </div>
+  <div class="videos-grid">
+    <div class="video-card">
+      <video controls playsinline preload="metadata">
+        <source src="videos/video1.mp4" type="video/mp4">
+      </video>
+      <div class="video-label">❄️ Ice Cold Cutz</div>
+    </div>
+    <div class="video-card">
+      <video controls playsinline preload="metadata">
+        <source src="videos/video2.mp4" type="video/mp4">
+      </video>
+      <div class="video-label">❄️ Ice Cold Cutz</div>
+    </div>
+    <div class="video-card">
+      <video controls playsinline preload="metadata">
+        <source src="videos/video3.mp4" type="video/mp4">
+      </video>
+      <div class="video-label">❄️ Ice Cold Cutz</div>
+    </div>
+    <div class="video-card">
+      <video controls playsinline preload="metadata">
+        <source src="videos/video4.mp4" type="video/mp4">
+      </video>
+      <div class="video-label">❄️ Ice Cold Cutz</div>
     </div>
   </div>
 </section>
@@ -612,10 +637,8 @@
     <p>Pick your date, time, and we'll handle the rest</p>
     <div class="ice-line"></div>
   </div>
-
   <div class="booking-wrap">
     <div style="display:flex;flex-direction:column;gap:24px;">
-      <!-- Calendar -->
       <div class="booking-panel">
         <div class="panel-title">Select Date</div>
         <div class="cal-header">
@@ -629,17 +652,12 @@
         </div>
         <div class="cal-grid" id="calGrid"></div>
       </div>
-
-      <!-- Time Slots -->
       <div class="booking-panel">
         <div class="panel-title">Select Time</div>
-        <div id="timeSlotArea">
-          <div class="no-date-msg">← Choose a date first</div>
-        </div>
+        <div id="timeSlotArea"><div class="no-date-msg">← Choose a date first</div></div>
       </div>
     </div>
 
-    <!-- Form -->
     <div class="booking-panel" style="display:flex;flex-direction:column;">
       <div class="panel-title">Your Info</div>
       <div class="booking-form" style="flex:1;">
@@ -655,12 +673,11 @@
           <label>Service</label>
           <select id="clientService">
             <option value="">— Choose a service —</option>
-            <option value="Haircut — $25">Haircut — $25</option>
-            <option value="Fade — $30">Fade — $30</option>
-            <option value="Beard Trim — $15">Beard Trim — $15</option>
-            <option value="Cut + Beard — $40">Cut + Beard — $40</option>
-            <option value="Kids Cut — $20">Kids Cut — $20</option>
-            <option value="Design / Art — $45+">Design / Art — $45+</option>
+            <option value="Adult Cut — $40">Adult Cut — $40</option>
+            <option value="Kids Cut — $25">Kids Cut — $25</option>
+            <option value="Beard Trim — $25">Beard Trim — $25</option>
+            <option value="Cut + Beard Combo — $50">Cut + Beard Combo — $50</option>
+            <option value="Designs — $50+">Designs — $50+</option>
           </select>
         </div>
         <div class="form-group">
@@ -668,15 +685,13 @@
           <textarea id="clientNotes" placeholder="Anything you want Chill to know..."></textarea>
         </div>
         <div class="booking-summary" id="bookingSummary">No date or time selected yet.</div>
-        <button class="btn-book" id="bookBtn" disabled onclick="submitBooking()">
-          Confirm Booking ❄️
-        </button>
+        <button class="btn-book" id="bookBtn" disabled onclick="submitBooking()">Confirm Booking ❄️</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── FOOTER ────────────────────────────────────────────────────── -->
+<!-- ─── FOOTER ─────────────────────────────────────────────────────── -->
 <footer>
   <div class="footer-brand">Ice Cold Cutz</div>
   <div class="footer-tag">The Coldest Barbers in the Game</div>
@@ -689,15 +704,13 @@
     </div>
     <div class="footer-col">
       <h4>Connect</h4>
-      <a href="#">@icecoldcutz</a>
-      <a href="#">Instagram</a>
-      <a href="#">Facebook</a>
+      <a href="https://www.instagram.com/icecoldcutz" target="_blank">@icecoldcutz</a>
+      <a href="tel:6789733600">(678) 973-3600</a>
     </div>
     <div class="footer-col">
       <h4>Location</h4>
       <a href="https://maps.google.com/?q=Atlanta+Barber+Lounge+Nassau+Street+Downtown+Atlanta" target="_blank">Atlanta Barber Lounge</a>
       <p>Nassau St, Downtown Atlanta, GA</p>
-      <a href="tel:6789733600">(678) 973-3600</a>
       <p>Walk-ins Welcome</p>
     </div>
   </div>
@@ -715,7 +728,7 @@
   <img id="lbImg" src="" alt="" />
 </div>
 
-<!-- ─── CONFIRMATION MODAL ────────────────────────────────────────── -->
+<!-- ─── MODAL ─────────────────────────────────────────────────────── -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <div class="modal-icon">❄️</div>
@@ -727,18 +740,15 @@
   </div>
 </div>
 
-<!-- ─── SCRIPTS ───────────────────────────────────────────────────── -->
 <script>
   /* ── SLIDESHOW ── */
   const slides = document.querySelectorAll('.slide');
   const dotsEl = document.getElementById('slideDots');
-  let current = 0;
-  let timer;
+  let current = 0, timer;
 
-  // Build dots
-  slides.forEach((_, i) => {
+  slides.forEach((_,i) => {
     const d = document.createElement('div');
-    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.className = 'dot' + (i===0?' active':'');
     d.addEventListener('click', () => goSlide(i));
     dotsEl.appendChild(d);
   });
@@ -751,44 +761,30 @@
     dotsEl.children[current].classList.add('active');
     resetTimer();
   }
-
-  function nextSlide() { goSlide(current + 1); }
-
-  function resetTimer() {
-    clearInterval(timer);
-    timer = setInterval(nextSlide, 4500);
-  }
-
+  function resetTimer() { clearInterval(timer); timer = setInterval(() => goSlide(current+1), 4500); }
   resetTimer();
 
   /* ── LIGHTBOX ── */
   function openLb(src, alt) {
-    const lb = document.getElementById('lightbox');
     document.getElementById('lbImg').src = src;
     document.getElementById('lbImg').alt = alt;
-    lb.classList.add('open');
+    document.getElementById('lightbox').classList.add('open');
   }
   function closeLb(e) {
-    if (!e || e.target !== document.getElementById('lbImg')) {
+    if (!e || e.target !== document.getElementById('lbImg'))
       document.getElementById('lightbox').classList.remove('open');
-    }
   }
 
   /* ── CALENDAR ── */
-  const CLOSED_DAYS = [0];
+  const CLOSED = [0];
   const SLOTS = ['9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM',
-                  '12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM',
-                  '3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'];
-
-  let today = new Date();
-  let viewYear = today.getFullYear();
-  let viewMonth = today.getMonth();
-  let selectedDate = null;
-  let selectedTime = null;
-
-  const bookedSlots = {
+                 '12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM',
+                 '3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'];
+  const today = new Date();
+  let viewYear = today.getFullYear(), viewMonth = today.getMonth();
+  let selectedDate = null, selectedTime = null;
+  const booked = {
     [`${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`]: ['10:00 AM','2:00 PM'],
-    [`${today.getFullYear()}-${today.getMonth()}-${today.getDate()+1}`]: ['9:00 AM','11:30 AM','3:00 PM'],
   };
 
   function renderCal() {
@@ -797,122 +793,85 @@
     document.getElementById('calMonthLabel').textContent = `${months[viewMonth]} ${viewYear}`;
     const grid = document.getElementById('calGrid');
     grid.innerHTML = '';
-
-    const firstDay = new Date(viewYear, viewMonth, 1).getDay();
-    const daysIn   = new Date(viewYear, viewMonth + 1, 0).getDate();
-
-    for (let i = 0; i < firstDay; i++) {
-      const el = document.createElement('div');
-      el.className = 'cal-day empty';
-      grid.appendChild(el);
-    }
-    for (let d = 1; d <= daysIn; d++) {
-      const el  = document.createElement('div');
-      const dt  = new Date(viewYear, viewMonth, d);
-      const dow = dt.getDay();
-      const isPast = dt < new Date(today.getFullYear(), today.getMonth(), today.getDate());
-      el.className = 'cal-day';
-      el.textContent = d;
-      if (isPast || CLOSED_DAYS.includes(dow)) {
-        el.classList.add('disabled');
-      } else {
-        if (d === today.getDate() && viewMonth === today.getMonth() && viewYear === today.getFullYear())
-          el.classList.add('today');
-        if (selectedDate &&
-            selectedDate.getDate() === d &&
-            selectedDate.getMonth() === viewMonth &&
-            selectedDate.getFullYear() === viewYear)
-          el.classList.add('selected');
-        el.addEventListener('click', () => selectDate(new Date(viewYear, viewMonth, d)));
+    const first = new Date(viewYear,viewMonth,1).getDay();
+    const days  = new Date(viewYear,viewMonth+1,0).getDate();
+    for(let i=0;i<first;i++){const e=document.createElement('div');e.className='cal-day empty';grid.appendChild(e);}
+    for(let d=1;d<=days;d++){
+      const el=document.createElement('div'), dt=new Date(viewYear,viewMonth,d);
+      const past = dt < new Date(today.getFullYear(),today.getMonth(),today.getDate());
+      el.className='cal-day'; el.textContent=d;
+      if(past||CLOSED.includes(dt.getDay())){el.classList.add('disabled');}
+      else{
+        if(d===today.getDate()&&viewMonth===today.getMonth()&&viewYear===today.getFullYear()) el.classList.add('today');
+        if(selectedDate&&selectedDate.getDate()===d&&selectedDate.getMonth()===viewMonth&&selectedDate.getFullYear()===viewYear) el.classList.add('selected');
+        el.addEventListener('click',()=>selectDate(new Date(viewYear,viewMonth,d)));
       }
       grid.appendChild(el);
     }
   }
 
-  function selectDate(dt) {
-    selectedDate = dt; selectedTime = null;
-    renderCal(); renderTimeSlots(); updateSummary();
-  }
+  function selectDate(dt){selectedDate=dt;selectedTime=null;renderCal();renderSlots();updateSummary();}
 
-  function renderTimeSlots() {
-    const area = document.getElementById('timeSlotArea');
-    if (!selectedDate) { area.innerHTML = '<div class="no-date-msg">← Choose a date first</div>'; return; }
-    const key = `${selectedDate.getFullYear()}-${selectedDate.getMonth()}-${selectedDate.getDate()}`;
-    const taken = bookedSlots[key] || [];
-    area.innerHTML = '<div class="time-grid"></div>';
-    const grid = area.querySelector('.time-grid');
-    SLOTS.forEach(t => {
-      const el = document.createElement('div');
-      el.className = 'time-slot';
-      el.textContent = t;
-      if (taken.includes(t)) {
-        el.classList.add('booked');
-      } else {
-        if (selectedTime === t) el.classList.add('selected');
-        el.addEventListener('click', () => selectTime(t));
+  function renderSlots(){
+    const area=document.getElementById('timeSlotArea');
+    if(!selectedDate){area.innerHTML='<div class="no-date-msg">← Choose a date first</div>';return;}
+    const key=`${selectedDate.getFullYear()}-${selectedDate.getMonth()}-${selectedDate.getDate()}`;
+    const taken=booked[key]||[];
+    area.innerHTML='<div class="time-grid"></div>';
+    const grid=area.querySelector('.time-grid');
+    SLOTS.forEach(t=>{
+      const el=document.createElement('div');
+      el.className='time-slot'; el.textContent=t;
+      if(taken.includes(t)){el.classList.add('booked');}
+      else{
+        if(selectedTime===t) el.classList.add('selected');
+        el.addEventListener('click',()=>{selectedTime=t;renderSlots();updateSummary();});
       }
       grid.appendChild(el);
     });
   }
 
-  function selectTime(t) { selectedTime = t; renderTimeSlots(); updateSummary(); }
-
-  function updateSummary() {
-    const sumEl = document.getElementById('bookingSummary');
-    const btn   = document.getElementById('bookBtn');
-    const name  = document.getElementById('clientName').value.trim();
-    const svc   = document.getElementById('clientService').value;
-    if (selectedDate && selectedTime) {
-      const dateStr = selectedDate.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
-      sumEl.innerHTML = `<strong>${dateStr}</strong> at <strong>${selectedTime}</strong>` +
-        (svc ? ` — <strong>${svc}</strong>` : '');
-      btn.disabled = !(name && svc);
-    } else {
-      sumEl.textContent = 'No date or time selected yet.';
-      btn.disabled = true;
-    }
+  function updateSummary(){
+    const sumEl=document.getElementById('bookingSummary');
+    const btn=document.getElementById('bookBtn');
+    const name=document.getElementById('clientName').value.trim();
+    const svc=document.getElementById('clientService').value;
+    if(selectedDate&&selectedTime){
+      const ds=selectedDate.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+      sumEl.innerHTML=`<strong>${ds}</strong> at <strong>${selectedTime}</strong>`+(svc?` — <strong>${svc}</strong>`:'');
+      btn.disabled=!(name&&svc);
+    } else {sumEl.textContent='No date or time selected yet.';btn.disabled=true;}
   }
 
-  document.getElementById('prevMonth').addEventListener('click', () => {
-    viewMonth--; if (viewMonth < 0) { viewMonth = 11; viewYear--; } renderCal();
-  });
-  document.getElementById('nextMonth').addEventListener('click', () => {
-    viewMonth++; if (viewMonth > 11) { viewMonth = 0; viewYear++; } renderCal();
-  });
-
-  ['clientName','clientService'].forEach(id => {
-    document.getElementById(id).addEventListener('input', updateSummary);
-    document.getElementById(id).addEventListener('change', updateSummary);
+  document.getElementById('prevMonth').addEventListener('click',()=>{viewMonth--;if(viewMonth<0){viewMonth=11;viewYear--;}renderCal();});
+  document.getElementById('nextMonth').addEventListener('click',()=>{viewMonth++;if(viewMonth>11){viewMonth=0;viewYear++;}renderCal();});
+  ['clientName','clientService'].forEach(id=>{
+    document.getElementById(id).addEventListener('input',updateSummary);
+    document.getElementById(id).addEventListener('change',updateSummary);
   });
 
-  function submitBooking() {
-    const name  = document.getElementById('clientName').value.trim();
-    const phone = document.getElementById('clientPhone').value.trim();
-    const svc   = document.getElementById('clientService').value;
-    const notes = document.getElementById('clientNotes').value.trim();
-    if (!name || !svc || !selectedDate || !selectedTime) return;
-    const dateStr = selectedDate.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
-    const key = `${selectedDate.getFullYear()}-${selectedDate.getMonth()}-${selectedDate.getDate()}`;
-    if (!bookedSlots[key]) bookedSlots[key] = [];
-    bookedSlots[key].push(selectedTime);
-    document.getElementById('modalDetail').innerHTML =
-      `<strong>${name}</strong> · ${svc}<br>${dateStr} at ${selectedTime}` +
-      (phone ? `<br>${phone}` : '') +
-      (notes ? `<br><em style="font-size:.8rem;color:var(--gray)">"${notes}"</em>` : '');
+  function submitBooking(){
+    const name=document.getElementById('clientName').value.trim();
+    const phone=document.getElementById('clientPhone').value.trim();
+    const svc=document.getElementById('clientService').value;
+    const notes=document.getElementById('clientNotes').value.trim();
+    if(!name||!svc||!selectedDate||!selectedTime) return;
+    const ds=selectedDate.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+    const key=`${selectedDate.getFullYear()}-${selectedDate.getMonth()}-${selectedDate.getDate()}`;
+    if(!booked[key]) booked[key]=[];
+    booked[key].push(selectedTime);
+    document.getElementById('modalDetail').innerHTML=
+      `<strong>${name}</strong> · ${svc}<br>${ds} at ${selectedTime}`+
+      (phone?`<br>${phone}`:'')+
+      (notes?`<br><em style="font-size:.8rem;color:var(--gray)">"${notes}"</em>`:'');
     document.getElementById('modalOverlay').classList.add('show');
-    selectedDate = null; selectedTime = null;
-    document.getElementById('clientName').value = '';
-    document.getElementById('clientPhone').value = '';
-    document.getElementById('clientService').value = '';
-    document.getElementById('clientNotes').value = '';
-    renderCal(); renderTimeSlots(); updateSummary();
+    selectedDate=null;selectedTime=null;
+    ['clientName','clientPhone','clientService','clientNotes'].forEach(id=>document.getElementById(id).value='');
+    renderCal();renderSlots();updateSummary();
   }
 
-  function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
-
-  document.getElementById('modalOverlay').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-  });
+  function closeModal(){document.getElementById('modalOverlay').classList.remove('show');}
+  document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
   renderCal();
 </script>
