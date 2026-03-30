@@ -4,7 +4,6 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ice Cold Cutz — Admin</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -218,14 +217,7 @@
 </div>
 
 <script>
-  // ── CONFIG ──────────────────────────────────────────────────────
-  const SUPABASE_URL  = 'YOUR_SUPABASE_URL'
-  const SUPABASE_KEY  = 'YOUR_SUPABASE_ANON_KEY'
-  const ADMIN_PASS    = 'icecold2026'   // ← change this password
-  // ────────────────────────────────────────────────────────────────
-
-  const { createClient } = window.supabase
-  const db = createClient(SUPABASE_URL, SUPABASE_KEY)
+  const ADMIN_PASS = 'icecold2026'   // ← change this to your password
 
   let allBookings = []
   let currentFilter = 'upcoming'
@@ -235,6 +227,7 @@
     const pass = document.getElementById('passInput').value
     if (pass === ADMIN_PASS) {
       sessionStorage.setItem('icadmin', '1')
+      sessionStorage.setItem('icadmintoken', pass)
       showDashboard()
     } else {
       document.getElementById('loginError').style.display = 'block'
@@ -244,6 +237,7 @@
 
   function logout() {
     sessionStorage.removeItem('icadmin')
+    sessionStorage.removeItem('icadmintoken')
     document.getElementById('dashboard').style.display = 'none'
     document.getElementById('loginScreen').style.display = 'flex'
     document.getElementById('passInput').value = ''
@@ -263,14 +257,17 @@
   /* ── DATA ── */
   async function loadBookings() {
     document.getElementById('bookingsList').innerHTML = '<div class="loading">Loading...</div>'
-    const { data, error } = await db.from('bookings').select('*').order('booking_date', { ascending: true }).order('booking_time', { ascending: true })
-    if (error) {
-      document.getElementById('bookingsList').innerHTML = '<div class="no-bookings">Error loading bookings. Check your Supabase config.</div>'
-      return
+    try {
+      const res = await fetch('/api/admin/bookings', {
+        headers: { 'Authorization': `Bearer ${sessionStorage.getItem('icadmintoken')}` }
+      })
+      if (!res.ok) { logout(); return }
+      allBookings = await res.json()
+      updateStats()
+      renderBookings()
+    } catch(e) {
+      document.getElementById('bookingsList').innerHTML = '<div class="no-bookings">Error loading bookings.</div>'
     }
-    allBookings = data || []
-    updateStats()
-    renderBookings()
   }
 
   function updateStats() {
@@ -351,13 +348,18 @@
   }
 
   async function setStatus(id, status) {
-    const { error } = await db.from('bookings').update({ status }).eq('id', id)
-    if (!error) {
-      const b = allBookings.find(x => x.id === id)
-      if (b) b.status = status
-      updateStats()
-      renderBookings()
-    }
+    await fetch(`/api/admin/bookings/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem('icadmintoken')}`
+      },
+      body: JSON.stringify({ status })
+    })
+    const b = allBookings.find(x => x.id === id)
+    if (b) b.status = status
+    updateStats()
+    renderBookings()
   }
 </script>
 </body>

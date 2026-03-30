@@ -730,22 +730,8 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
-  // ── CONFIG — paste your keys here after setup ──────────────────
-  const SUPABASE_URL = 'YOUR_SUPABASE_URL'
-  const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY'
-  const EMAILJS_KEY  = 'YOUR_EMAILJS_PUBLIC_KEY'   // leave as-is to skip email
-  const EMAILJS_SVC  = 'YOUR_EMAILJS_SERVICE_ID'
-  const EMAILJS_TPL  = 'YOUR_EMAILJS_TEMPLATE_ID'
-  const BARBER_EMAIL = 'YOUR_EMAIL_HERE'            // Chill's email for notifications
-  // ───────────────────────────────────────────────────────────────
-
-  const { createClient } = window.supabase
-  const db = createClient(SUPABASE_URL, SUPABASE_KEY)
-
-  if (EMAILJS_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') emailjs.init(EMAILJS_KEY)
+  // No config needed — all handled by the server
 
   /* ── SLIDESHOW ── */
   const slides = document.querySelectorAll('.slide')
@@ -820,13 +806,12 @@
 
     area.innerHTML='<div class="no-date-msg" style="padding:16px 0">Loading times...</div>'
 
-    // Query Supabase for already-booked slots on this date
     const dateStr = selectedDate.toISOString().split('T')[0]
     let taken = []
-    if(SUPABASE_URL !== 'YOUR_SUPABASE_URL'){
-      const { data } = await db.from('bookings').select('booking_time').eq('booking_date', dateStr).eq('status','confirmed')
-      taken = data ? data.map(r => r.booking_time) : []
-    }
+    try {
+      const res = await fetch(`/api/slots?date=${dateStr}`)
+      taken = await res.json()
+    } catch(e) { taken = [] }
 
     area.innerHTML='<div class="time-grid"></div>'
     const grid = area.querySelector('.time-grid')
@@ -875,31 +860,22 @@
     const dateStr = selectedDate.toISOString().split('T')[0]
     const ds = selectedDate.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})
 
-    // Save to Supabase
-    if(SUPABASE_URL !== 'YOUR_SUPABASE_URL'){
-      const { error } = await db.from('bookings').insert([{
-        client_name: name, client_phone: phone,
-        service: svc, notes: notes,
-        booking_date: dateStr, booking_time: selectedTime, status: 'confirmed'
-      }])
-      if(error){
+    try {
+      const res = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ client_name:name, client_phone:phone, service:svc, notes, booking_date:dateStr, booking_time:selectedTime })
+      })
+      const data = await res.json()
+      if(!res.ok){
         btn.disabled=false; btn.textContent='Confirm Booking ❄️'
-        alert('Something went wrong. Please try again or call us at (678) 973-3600.')
+        alert(data.error || 'Something went wrong. Please call (678) 973-3600.')
         return
       }
-    }
-
-    // Send email notification to Chill via EmailJS
-    if(EMAILJS_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY'){
-      emailjs.send(EMAILJS_SVC, EMAILJS_TPL, {
-        to_email: BARBER_EMAIL,
-        client_name: name,
-        client_phone: phone || 'Not provided',
-        service: svc,
-        booking_date: ds,
-        booking_time: selectedTime,
-        notes: notes || 'None'
-      }).catch(()=>{}) // silent fail — booking already saved
+    } catch(e){
+      btn.disabled=false; btn.textContent='Confirm Booking ❄️'
+      alert('Connection error. Please call (678) 973-3600.')
+      return
     }
 
     // Show confirmation

@@ -1,0 +1,15 @@
+{
+  "name": "icecold-cutz",
+  "version": "1.0.0",
+  "description": "Ice Cold Cutz barber booking site",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^9.6.0",
+    "express": "^4.19.2",
+    "nodemailer": "^6.9.13"
+  }
+}

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ice Cold Cutz — Admin</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ice: #00d4ff; --ice2: #4dd0e1; --navy: #04080f;
+      --navy2: #080e1a; --navy3: #0d1828;
+      --glass: rgba(0,212,255,0.07); --border: rgba(0,212,255,0.25);
+      --white: #fff; --gray: #a0aec0;
+      --green: #38a169; --red: #e53e3e; --yellow: #d69e2e;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--navy); color: var(--white); min-height: 100vh; }
+
+    /* ── LOGIN ── */
+    .login-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px;
+    }
+    .login-box {
+      background: var(--glass); border: 1px solid var(--border); border-radius: 24px;
+      padding: 48px 40px; max-width: 400px; width: 100%; text-align: center;
+      backdrop-filter: blur(12px);
+    }
+    .login-logo { font-size: 2.5rem; font-weight: 900; letter-spacing: 4px; text-transform: uppercase;
+      background: linear-gradient(90deg,var(--ice),var(--white)); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; margin-bottom: 6px; }
+    .login-sub { color: var(--ice2); font-size: .8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 32px; }
+    .login-box input {
+      width: 100%; background: rgba(0,0,0,.3); border: 1px solid var(--border); border-radius: 10px;
+      color: var(--white); padding: 14px 16px; font-size: 1rem; outline: none;
+      transition: border-color .2s; margin-bottom: 16px; letter-spacing: 3px;
+    }
+    .login-box input:focus { border-color: var(--ice); }
+    .login-btn {
+      width: 100%; background: linear-gradient(135deg,var(--ice),#0099cc); color: var(--navy);
+      font-weight: 900; font-size: .9rem; letter-spacing: 3px; text-transform: uppercase;
+      border: none; border-radius: 50px; padding: 16px; cursor: pointer; transition: all .2s;
+    }
+    .login-btn:hover { box-shadow: 0 0 24px rgba(0,212,255,.5); }
+    .login-error { color: var(--red); font-size: .8rem; margin-top: 12px; letter-spacing: 1px; display: none; }
+
+    /* ── DASHBOARD ── */
+    .dashboard { display: none; }
+
+    header {
+      background: rgba(4,8,15,.9); border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(18px); padding: 16px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .header-brand { font-size: 1rem; font-weight: 900; letter-spacing: 3px; text-transform: uppercase;
+      background: linear-gradient(90deg,var(--ice),var(--white)); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; }
+    .header-right { display: flex; align-items: center; gap: 16px; }
+    .logout-btn {
+      background: none; border: 1px solid var(--border); color: var(--gray);
+      padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: .75rem;
+      letter-spacing: 1px; text-transform: uppercase; transition: all .2s;
+    }
+    .logout-btn:hover { border-color: var(--red); color: var(--red); }
+
+    main { padding: 32px; max-width: 1200px; margin: 0 auto; }
+
+    /* Stats */
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 16px; margin-bottom: 32px; }
+    .stat-card {
+      background: var(--glass); border: 1px solid var(--border); border-radius: 16px;
+      padding: 20px 24px; text-align: center; backdrop-filter: blur(10px);
+    }
+    .stat-num { font-size: 2.2rem; font-weight: 900;
+      background: linear-gradient(135deg,var(--ice),var(--white));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-label { font-size: .7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); margin-top: 4px; }
+
+    /* Controls */
+    .controls { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; align-items: center; }
+    .filter-btn {
+      background: var(--glass); border: 1px solid var(--border); color: var(--gray);
+      padding: 8px 18px; border-radius: 20px; cursor: pointer; font-size: .78rem;
+      letter-spacing: 1px; text-transform: uppercase; transition: all .2s;
+    }
+    .filter-btn.active { background: var(--ice); border-color: var(--ice); color: var(--navy); font-weight: 700; }
+    .refresh-btn {
+      margin-left: auto; background: none; border: 1px solid var(--border); color: var(--ice2);
+      padding: 8px 18px; border-radius: 20px; cursor: pointer; font-size: .78rem;
+      letter-spacing: 1px; text-transform: uppercase; transition: all .2s;
+    }
+    .refresh-btn:hover { border-color: var(--ice); color: var(--ice); }
+
+    /* Bookings */
+    .bookings-list { display: flex; flex-direction: column; gap: 12px; }
+    .no-bookings { text-align: center; padding: 60px; color: var(--gray); font-size: .9rem; letter-spacing: 2px; }
+
+    .booking-card {
+      background: var(--glass); border: 1px solid var(--border); border-radius: 16px;
+      padding: 20px 24px; backdrop-filter: blur(8px);
+      display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center;
+      transition: border-color .2s;
+    }
+    .booking-card.confirmed { border-left: 3px solid var(--ice); }
+    .booking-card.completed { border-left: 3px solid var(--green); opacity: .7; }
+    .booking-card.cancelled { border-left: 3px solid var(--red); opacity: .5; }
+
+    .booking-date-block { text-align: center; min-width: 64px; }
+    .booking-day { font-size: 1.8rem; font-weight: 900; line-height: 1;
+      background: linear-gradient(135deg,var(--ice),var(--white));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .booking-month { font-size: .65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); }
+    .booking-time-small { font-size: .72rem; color: var(--ice2); margin-top: 4px; font-weight: 600; }
+
+    .booking-info { }
+    .booking-name { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .booking-service {
+      display: inline-block; font-size: .72rem; letter-spacing: 1px; text-transform: uppercase;
+      background: rgba(0,212,255,.12); border: 1px solid rgba(0,212,255,.25);
+      color: var(--ice2); padding: 3px 10px; border-radius: 20px; margin-bottom: 6px;
+    }
+    .booking-meta { font-size: .8rem; color: var(--gray); }
+    .booking-meta a { color: var(--ice2); text-decoration: none; }
+    .booking-meta a:hover { color: var(--ice); }
+    .booking-notes { font-size: .78rem; color: var(--gray); font-style: italic; margin-top: 4px; }
+
+    .booking-actions { display: flex; flex-direction: column; gap: 8px; min-width: 100px; }
+    .action-btn {
+      padding: 8px 12px; border-radius: 10px; font-size: .72rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase; border: none; cursor: pointer; transition: all .2s;
+      text-align: center;
+    }
+    .btn-complete { background: rgba(56,161,105,.15); border: 1px solid var(--green); color: var(--green); }
+    .btn-complete:hover { background: var(--green); color: var(--white); }
+    .btn-cancel { background: rgba(229,62,62,.1); border: 1px solid var(--red); color: var(--red); }
+    .btn-cancel:hover { background: var(--red); color: var(--white); }
+    .btn-call { background: rgba(0,212,255,.1); border: 1px solid var(--border); color: var(--ice2); text-decoration: none; display: block; }
+    .btn-call:hover { background: var(--ice); color: var(--navy); border-color: var(--ice); }
+
+    .status-badge {
+      display: inline-block; font-size: .65rem; letter-spacing: 1px; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 10px; font-weight: 700; margin-left: 8px;
+    }
+    .badge-confirmed { background: rgba(0,212,255,.15); color: var(--ice); }
+    .badge-completed { background: rgba(56,161,105,.15); color: var(--green); }
+    .badge-cancelled { background: rgba(229,62,62,.15); color: var(--red); }
+
+    .loading { text-align: center; padding: 60px; color: var(--ice2); font-size: .85rem; letter-spacing: 2px; }
+
+    @media (max-width: 600px) {
+      main { padding: 16px; }
+      .booking-card { grid-template-columns: 1fr; }
+      .booking-date-block { display: flex; align-items: center; gap: 12px; text-align: left; }
+      .booking-actions { flex-direction: row; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── LOGIN ─────────────────────────────────────────────────── -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">Ice Cold Cutz</div>
+    <div class="login-sub">Admin Dashboard</div>
+    <input type="password" id="passInput" placeholder="Enter password" onkeydown="if(event.key==='Enter')login()" />
+    <button class="login-btn" onclick="login()">Sign In ❄️</button>
+    <div class="login-error" id="loginError">Wrong password. Try again.</div>
+  </div>
+</div>
+
+<!-- ── DASHBOARD ──────────────────────────────────────────────── -->
+<div class="dashboard" id="dashboard">
+  <header>
+    <div class="header-brand">❄️ Ice Cold Cutz — Bookings</div>
+    <div class="header-right">
+      <span id="headerDate" style="color:var(--gray);font-size:.78rem;letter-spacing:1px;"></span>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-num" id="statToday">—</div>
+        <div class="stat-label">Today</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="statUpcoming">—</div>
+        <div class="stat-label">Upcoming</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="statTotal">—</div>
+        <div class="stat-label">All Time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="statRevenue">—</div>
+        <div class="stat-label">Est. Revenue</div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button class="filter-btn active" onclick="setFilter('upcoming',this)">Upcoming</button>
+      <button class="filter-btn" onclick="setFilter('today',this)">Today</button>
+      <button class="filter-btn" onclick="setFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('completed',this)">Completed</button>
+      <button class="filter-btn" onclick="setFilter('cancelled',this)">Cancelled</button>
+      <button class="refresh-btn" onclick="loadBookings()">↻ Refresh</button>
+    </div>
+
+    <!-- Bookings list -->
+    <div class="bookings-list" id="bookingsList">
+      <div class="loading">Loading appointments...</div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const ADMIN_PASS = 'icecold2026'   // ← change this to your password
+
+  let allBookings = []
+  let currentFilter = 'upcoming'
+
+  /* ── AUTH ── */
+  function login() {
+    const pass = document.getElementById('passInput').value
+    if (pass === ADMIN_PASS) {
+      sessionStorage.setItem('icadmin', '1')
+      sessionStorage.setItem('icadmintoken', pass)
+      showDashboard()
+    } else {
+      document.getElementById('loginError').style.display = 'block'
+      document.getElementById('passInput').value = ''
+    }
+  }
+
+  function logout() {
+    sessionStorage.removeItem('icadmin')
+    sessionStorage.removeItem('icadmintoken')
+    document.getElementById('dashboard').style.display = 'none'
+    document.getElementById('loginScreen').style.display = 'flex'
+    document.getElementById('passInput').value = ''
+  }
+
+  function showDashboard() {
+    document.getElementById('loginScreen').style.display = 'none'
+    document.getElementById('dashboard').style.display = 'block'
+    const now = new Date()
+    document.getElementById('headerDate').textContent =
+      now.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' })
+    loadBookings()
+  }
+
+  if (sessionStorage.getItem('icadmin')) showDashboard()
+
+  /* ── DATA ── */
+  async function loadBookings() {
+    document.getElementById('bookingsList').innerHTML = '<div class="loading">Loading...</div>'
+    try {
+      const res = await fetch('/api/admin/bookings', {
+        headers: { 'Authorization': `Bearer ${sessionStorage.getItem('icadmintoken')}` }
+      })
+      if (!res.ok) { logout(); return }
+      allBookings = await res.json()
+      updateStats()
+      renderBookings()
+    } catch(e) {
+      document.getElementById('bookingsList').innerHTML = '<div class="no-bookings">Error loading bookings.</div>'
+    }
+  }
+
+  function updateStats() {
+    const todayStr = new Date().toISOString().split('T')[0]
+    const today    = allBookings.filter(b => b.booking_date === todayStr && b.status === 'confirmed')
+    const upcoming = allBookings.filter(b => b.booking_date >= todayStr && b.status === 'confirmed')
+    const total    = allBookings.filter(b => b.status !== 'cancelled')
+
+    // Estimate revenue from service name
+    const rev = total.reduce((sum, b) => {
+      const m = b.service.match(/\$(\d+)/)
+      return sum + (m ? parseInt(m[1]) : 0)
+    }, 0)
+
+    document.getElementById('statToday').textContent    = today.length
+    document.getElementById('statUpcoming').textContent = upcoming.length
+    document.getElementById('statTotal').textContent    = total.length
+    document.getElementById('statRevenue').textContent  = rev > 0 ? `$${rev}` : '—'
+  }
+
+  function setFilter(f, btn) {
+    currentFilter = f
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'))
+    btn.classList.add('active')
+    renderBookings()
+  }
+
+  function renderBookings() {
+    const todayStr = new Date().toISOString().split('T')[0]
+    let filtered = allBookings
+
+    if (currentFilter === 'today')     filtered = allBookings.filter(b => b.booking_date === todayStr)
+    if (currentFilter === 'upcoming')  filtered = allBookings.filter(b => b.booking_date >= todayStr && b.status === 'confirmed')
+    if (currentFilter === 'completed') filtered = allBookings.filter(b => b.status === 'completed')
+    if (currentFilter === 'cancelled') filtered = allBookings.filter(b => b.status === 'cancelled')
+
+    const list = document.getElementById('bookingsList')
+    if (!filtered.length) {
+      list.innerHTML = `<div class="no-bookings">No ${currentFilter} bookings.</div>`
+      return
+    }
+
+    list.innerHTML = filtered.map(b => {
+      const d    = new Date(b.booking_date + 'T12:00:00')
+      const day  = d.getDate()
+      const mon  = d.toLocaleDateString('en-US', { month:'short' }).toUpperCase()
+      const wday = d.toLocaleDateString('en-US', { weekday:'short' }).toUpperCase()
+      const phoneLink = b.client_phone
+        ? `<a href="tel:${b.client_phone.replace(/\D/g,'')}">${b.client_phone}</a>`
+        : '<span style="color:#2a3a4a">No phone</span>'
+      const notesHtml = b.notes ? `<div class="booking-notes">"${b.notes}"</div>` : ''
+      const badge = `<span class="status-badge badge-${b.status}">${b.status}</span>`
+
+      const actions = b.status === 'confirmed'
+        ? `<button class="action-btn btn-complete" onclick="setStatus('${b.id}','completed')">✓ Done</button>
+           <button class="action-btn btn-cancel"   onclick="setStatus('${b.id}','cancelled')">✕ Cancel</button>
+           ${b.client_phone ? `<a class="action-btn btn-call" href="tel:${b.client_phone.replace(/\D/g,'')}">📞 Call</a>` : ''}`
+        : `<button class="action-btn btn-complete" onclick="setStatus('${b.id}','confirmed')" style="border-color:var(--ice2);color:var(--ice2)">↩ Restore</button>`
+
+      return `
+        <div class="booking-card ${b.status}" id="card-${b.id}">
+          <div class="booking-date-block">
+            <div>
+              <div class="booking-day">${day}</div>
+              <div class="booking-month">${wday} ${mon}</div>
+              <div class="booking-time-small">${b.booking_time}</div>
+            </div>
+          </div>
+          <div class="booking-info">
+            <div class="booking-name">${b.client_name} ${badge}</div>
+            <div><span class="booking-service">${b.service}</span></div>
+            <div class="booking-meta">${phoneLink}</div>
+            ${notesHtml}
+          </div>
+          <div class="booking-actions">${actions}</div>
+        </div>`
+    }).join('')
+  }
+
+  async function setStatus(id, status) {
+    await fetch(`/api/admin/bookings/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem('icadmintoken')}`
+      },
+      body: JSON.stringify({ status })
+    })
+    const b = allBookings.find(x => x.id === id)
+    if (b) b.status = status
+    updateStats()
+    renderBookings()
+  }
+</script>
+</body>
+</html>
