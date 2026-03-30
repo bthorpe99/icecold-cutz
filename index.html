@@ -730,140 +730,196 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
+  // ── CONFIG — paste your keys here after setup ──────────────────
+  const SUPABASE_URL = 'YOUR_SUPABASE_URL'
+  const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY'
+  const EMAILJS_KEY  = 'YOUR_EMAILJS_PUBLIC_KEY'   // leave as-is to skip email
+  const EMAILJS_SVC  = 'YOUR_EMAILJS_SERVICE_ID'
+  const EMAILJS_TPL  = 'YOUR_EMAILJS_TEMPLATE_ID'
+  const BARBER_EMAIL = 'YOUR_EMAIL_HERE'            // Chill's email for notifications
+  // ───────────────────────────────────────────────────────────────
+
+  const { createClient } = window.supabase
+  const db = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+  if (EMAILJS_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') emailjs.init(EMAILJS_KEY)
+
   /* ── SLIDESHOW ── */
-  const slides = document.querySelectorAll('.slide');
-  const dotsEl = document.getElementById('slideDots');
-  let current = 0, timer;
+  const slides = document.querySelectorAll('.slide')
+  const dotsEl = document.getElementById('slideDots')
+  let current = 0, timer
 
   slides.forEach((_,i) => {
-    const d = document.createElement('div');
-    d.className = 'dot' + (i===0?' active':'');
-    d.addEventListener('click', () => goSlide(i));
-    dotsEl.appendChild(d);
-  });
-
+    const d = document.createElement('div')
+    d.className = 'dot' + (i===0 ? ' active' : '')
+    d.addEventListener('click', () => goSlide(i))
+    dotsEl.appendChild(d)
+  })
   function goSlide(n) {
-    slides[current].classList.remove('active');
-    dotsEl.children[current].classList.remove('active');
-    current = (n + slides.length) % slides.length;
-    slides[current].classList.add('active');
-    dotsEl.children[current].classList.add('active');
-    resetTimer();
+    slides[current].classList.remove('active')
+    dotsEl.children[current].classList.remove('active')
+    current = (n + slides.length) % slides.length
+    slides[current].classList.add('active')
+    dotsEl.children[current].classList.add('active')
+    resetTimer()
   }
-  function resetTimer() { clearInterval(timer); timer = setInterval(() => goSlide(current+1), 4500); }
-  resetTimer();
+  function resetTimer() { clearInterval(timer); timer = setInterval(() => goSlide(current+1), 4500) }
+  resetTimer()
 
   /* ── LIGHTBOX ── */
   function openLb(src, alt) {
-    document.getElementById('lbImg').src = src;
-    document.getElementById('lbImg').alt = alt;
-    document.getElementById('lightbox').classList.add('open');
+    document.getElementById('lbImg').src = src
+    document.getElementById('lbImg').alt = alt
+    document.getElementById('lightbox').classList.add('open')
   }
   function closeLb(e) {
     if (!e || e.target !== document.getElementById('lbImg'))
-      document.getElementById('lightbox').classList.remove('open');
+      document.getElementById('lightbox').classList.remove('open')
   }
 
   /* ── CALENDAR ── */
-  const CLOSED = [0];
+  const CLOSED = [0]
   const SLOTS = ['9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM',
                  '12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM',
-                 '3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'];
-  const today = new Date();
-  let viewYear = today.getFullYear(), viewMonth = today.getMonth();
-  let selectedDate = null, selectedTime = null;
-  const booked = {
-    [`${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`]: ['10:00 AM','2:00 PM'],
-  };
+                 '3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM']
+  const today = new Date()
+  let viewYear = today.getFullYear(), viewMonth = today.getMonth()
+  let selectedDate = null, selectedTime = null
 
   function renderCal() {
     const months = ['January','February','March','April','May','June',
-                    'July','August','September','October','November','December'];
-    document.getElementById('calMonthLabel').textContent = `${months[viewMonth]} ${viewYear}`;
-    const grid = document.getElementById('calGrid');
-    grid.innerHTML = '';
-    const first = new Date(viewYear,viewMonth,1).getDay();
-    const days  = new Date(viewYear,viewMonth+1,0).getDate();
-    for(let i=0;i<first;i++){const e=document.createElement('div');e.className='cal-day empty';grid.appendChild(e);}
+                    'July','August','September','October','November','December']
+    document.getElementById('calMonthLabel').textContent = `${months[viewMonth]} ${viewYear}`
+    const grid = document.getElementById('calGrid')
+    grid.innerHTML = ''
+    const first = new Date(viewYear,viewMonth,1).getDay()
+    const days  = new Date(viewYear,viewMonth+1,0).getDate()
+    for(let i=0;i<first;i++){const e=document.createElement('div');e.className='cal-day empty';grid.appendChild(e)}
     for(let d=1;d<=days;d++){
-      const el=document.createElement('div'), dt=new Date(viewYear,viewMonth,d);
-      const past = dt < new Date(today.getFullYear(),today.getMonth(),today.getDate());
-      el.className='cal-day'; el.textContent=d;
-      if(past||CLOSED.includes(dt.getDay())){el.classList.add('disabled');}
+      const el=document.createElement('div'), dt=new Date(viewYear,viewMonth,d)
+      const past = dt < new Date(today.getFullYear(),today.getMonth(),today.getDate())
+      el.className='cal-day'; el.textContent=d
+      if(past||CLOSED.includes(dt.getDay())){ el.classList.add('disabled') }
       else{
-        if(d===today.getDate()&&viewMonth===today.getMonth()&&viewYear===today.getFullYear()) el.classList.add('today');
-        if(selectedDate&&selectedDate.getDate()===d&&selectedDate.getMonth()===viewMonth&&selectedDate.getFullYear()===viewYear) el.classList.add('selected');
-        el.addEventListener('click',()=>selectDate(new Date(viewYear,viewMonth,d)));
+        if(d===today.getDate()&&viewMonth===today.getMonth()&&viewYear===today.getFullYear()) el.classList.add('today')
+        if(selectedDate&&selectedDate.getDate()===d&&selectedDate.getMonth()===viewMonth&&selectedDate.getFullYear()===viewYear) el.classList.add('selected')
+        el.addEventListener('click',()=>selectDate(new Date(viewYear,viewMonth,d)))
       }
-      grid.appendChild(el);
+      grid.appendChild(el)
     }
   }
 
-  function selectDate(dt){selectedDate=dt;selectedTime=null;renderCal();renderSlots();updateSummary();}
+  function selectDate(dt){ selectedDate=dt; selectedTime=null; renderCal(); renderSlots(); updateSummary() }
 
-  function renderSlots(){
-    const area=document.getElementById('timeSlotArea');
-    if(!selectedDate){area.innerHTML='<div class="no-date-msg">← Choose a date first</div>';return;}
-    const key=`${selectedDate.getFullYear()}-${selectedDate.getMonth()}-${selectedDate.getDate()}`;
-    const taken=booked[key]||[];
-    area.innerHTML='<div class="time-grid"></div>';
-    const grid=area.querySelector('.time-grid');
+  async function renderSlots() {
+    const area = document.getElementById('timeSlotArea')
+    if(!selectedDate){ area.innerHTML='<div class="no-date-msg">← Choose a date first</div>'; return }
+
+    area.innerHTML='<div class="no-date-msg" style="padding:16px 0">Loading times...</div>'
+
+    // Query Supabase for already-booked slots on this date
+    const dateStr = selectedDate.toISOString().split('T')[0]
+    let taken = []
+    if(SUPABASE_URL !== 'YOUR_SUPABASE_URL'){
+      const { data } = await db.from('bookings').select('booking_time').eq('booking_date', dateStr).eq('status','confirmed')
+      taken = data ? data.map(r => r.booking_time) : []
+    }
+
+    area.innerHTML='<div class="time-grid"></div>'
+    const grid = area.querySelector('.time-grid')
     SLOTS.forEach(t=>{
-      const el=document.createElement('div');
-      el.className='time-slot'; el.textContent=t;
-      if(taken.includes(t)){el.classList.add('booked');}
+      const el=document.createElement('div')
+      el.className='time-slot'; el.textContent=t
+      if(taken.includes(t)){ el.classList.add('booked') }
       else{
-        if(selectedTime===t) el.classList.add('selected');
-        el.addEventListener('click',()=>{selectedTime=t;renderSlots();updateSummary();});
+        if(selectedTime===t) el.classList.add('selected')
+        el.addEventListener('click',()=>{ selectedTime=t; renderSlots(); updateSummary() })
       }
-      grid.appendChild(el);
-    });
+      grid.appendChild(el)
+    })
   }
 
   function updateSummary(){
-    const sumEl=document.getElementById('bookingSummary');
-    const btn=document.getElementById('bookBtn');
-    const name=document.getElementById('clientName').value.trim();
-    const svc=document.getElementById('clientService').value;
+    const sumEl=document.getElementById('bookingSummary')
+    const btn=document.getElementById('bookBtn')
+    const name=document.getElementById('clientName').value.trim()
+    const svc=document.getElementById('clientService').value
     if(selectedDate&&selectedTime){
-      const ds=selectedDate.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
-      sumEl.innerHTML=`<strong>${ds}</strong> at <strong>${selectedTime}</strong>`+(svc?` — <strong>${svc}</strong>`:'');
-      btn.disabled=!(name&&svc);
-    } else {sumEl.textContent='No date or time selected yet.';btn.disabled=true;}
+      const ds=selectedDate.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})
+      sumEl.innerHTML=`<strong>${ds}</strong> at <strong>${selectedTime}</strong>`+(svc?` — <strong>${svc}</strong>`:'')
+      btn.disabled=!(name&&svc)
+    } else { sumEl.textContent='No date or time selected yet.'; btn.disabled=true }
   }
 
-  document.getElementById('prevMonth').addEventListener('click',()=>{viewMonth--;if(viewMonth<0){viewMonth=11;viewYear--;}renderCal();});
-  document.getElementById('nextMonth').addEventListener('click',()=>{viewMonth++;if(viewMonth>11){viewMonth=0;viewYear++;}renderCal();});
-  ['clientName','clientService'].forEach(id=>{
-    document.getElementById(id).addEventListener('input',updateSummary);
-    document.getElementById(id).addEventListener('change',updateSummary);
-  });
+  document.getElementById('prevMonth').addEventListener('click',()=>{ viewMonth--; if(viewMonth<0){viewMonth=11;viewYear--;} renderCal() })
+  document.getElementById('nextMonth').addEventListener('click',()=>{ viewMonth++; if(viewMonth>11){viewMonth=0;viewYear++;} renderCal() })
+  ;['clientName','clientService'].forEach(id=>{
+    document.getElementById(id).addEventListener('input',updateSummary)
+    document.getElementById(id).addEventListener('change',updateSummary)
+  })
 
-  function submitBooking(){
-    const name=document.getElementById('clientName').value.trim();
-    const phone=document.getElementById('clientPhone').value.trim();
-    const svc=document.getElementById('clientService').value;
-    const notes=document.getElementById('clientNotes').value.trim();
-    if(!name||!svc||!selectedDate||!selectedTime) return;
-    const ds=selectedDate.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
-    const key=`${selectedDate.getFullYear()}-${selectedDate.getMonth()}-${selectedDate.getDate()}`;
-    if(!booked[key]) booked[key]=[];
-    booked[key].push(selectedTime);
+  async function submitBooking(){
+    const name  = document.getElementById('clientName').value.trim()
+    const phone = document.getElementById('clientPhone').value.trim()
+    const svc   = document.getElementById('clientService').value
+    const notes = document.getElementById('clientNotes').value.trim()
+    if(!name||!svc||!selectedDate||!selectedTime) return
+
+    const btn = document.getElementById('bookBtn')
+    btn.disabled = true
+    btn.textContent = 'Booking...'
+
+    const dateStr = selectedDate.toISOString().split('T')[0]
+    const ds = selectedDate.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})
+
+    // Save to Supabase
+    if(SUPABASE_URL !== 'YOUR_SUPABASE_URL'){
+      const { error } = await db.from('bookings').insert([{
+        client_name: name, client_phone: phone,
+        service: svc, notes: notes,
+        booking_date: dateStr, booking_time: selectedTime, status: 'confirmed'
+      }])
+      if(error){
+        btn.disabled=false; btn.textContent='Confirm Booking ❄️'
+        alert('Something went wrong. Please try again or call us at (678) 973-3600.')
+        return
+      }
+    }
+
+    // Send email notification to Chill via EmailJS
+    if(EMAILJS_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY'){
+      emailjs.send(EMAILJS_SVC, EMAILJS_TPL, {
+        to_email: BARBER_EMAIL,
+        client_name: name,
+        client_phone: phone || 'Not provided',
+        service: svc,
+        booking_date: ds,
+        booking_time: selectedTime,
+        notes: notes || 'None'
+      }).catch(()=>{}) // silent fail — booking already saved
+    }
+
+    // Show confirmation
     document.getElementById('modalDetail').innerHTML=
       `<strong>${name}</strong> · ${svc}<br>${ds} at ${selectedTime}`+
       (phone?`<br>${phone}`:'')+
-      (notes?`<br><em style="font-size:.8rem;color:var(--gray)">"${notes}"</em>`:'');
-    document.getElementById('modalOverlay').classList.add('show');
-    selectedDate=null;selectedTime=null;
-    ['clientName','clientPhone','clientService','clientNotes'].forEach(id=>document.getElementById(id).value='');
-    renderCal();renderSlots();updateSummary();
+      (notes?`<br><em style="font-size:.8rem;color:var(--gray)">"${notes}"</em>`:'')
+    document.getElementById('modalOverlay').classList.add('show')
+
+    // Reset
+    selectedDate=null; selectedTime=null
+    ;['clientName','clientPhone','clientService','clientNotes'].forEach(id=>document.getElementById(id).value='')
+    btn.textContent='Confirm Booking ❄️'
+    renderCal(); renderSlots(); updateSummary()
   }
 
-  function closeModal(){document.getElementById('modalOverlay').classList.remove('show');}
-  document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+  function closeModal(){ document.getElementById('modalOverlay').classList.remove('show') }
+  document.getElementById('modalOverlay').addEventListener('click',function(e){ if(e.target===this)closeModal() })
 
-  renderCal();
+  renderCal()
 </script>
 </body>
 </html>
